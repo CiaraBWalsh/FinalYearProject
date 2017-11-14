@@ -28,9 +28,7 @@ if(!empty($_POST['RSSI'])) {
    	print_r($cursor->toArray());
 }
 else {
-	$ts = new MongoDB\BSON\UTCDateTime(new DateTime);
    	$filter = [];
-	//$options=[];
    	$options = [
 		'batchSize'=>1,
 		'limit'=>1,
@@ -38,8 +36,12 @@ else {
    	$query = new MongoDB\Driver\Query($filter, $options);
    	$cursor = $manager->executeQuery('walsh.fyp', $query);
    	print("<p>The contents of the collection walsh.fyp are:</p>");
-   	$rssi_values[] = $cursor->toArray();
-	print_r($rssi_values);
+   	//$rssi_values[] = $cursor->toArray();
+	$rssi = 'RSSI';
+	foreach($cursor as $doc) {
+		echo("RSSI ");
+		echo($doc->$rssi);
+	}
 }
 ?>
 <html>
