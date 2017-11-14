@@ -20,8 +20,8 @@ if(!empty($_POST['RSSI'])) {
    	$filter = [];
    	$options = [
 		'batchSize'=>1,
-		'singleBatch'=>true,
-		'projection'=> ['RSSI'=>1]];
+		'limit' =>1,
+		'sort' => ['time' => -1]];
    	$query = new MongoDB\Driver\Query($filter, $options);
    	$cursor = $manager->executeQuery('walsh.fyp', $query);
    	print("<p>The contents of the collection walsh.fyp are:</p>");
@@ -33,14 +33,13 @@ else {
 	//$options=[];
    	$options = [
 		'batchSize'=>1,
-		'singleBatch'=>true,
-		'projection'=> ['RSSI'=>1],
-		'sort' => ['ts' => 1]];
+		'limit'=>1,
+		'sort' => ['time' => -1]];
    	$query = new MongoDB\Driver\Query($filter, $options);
    	$cursor = $manager->executeQuery('walsh.fyp', $query);
-   	//$cursor = $collection->find()->sort(array('ts'=> -1))->limit(1);
    	print("<p>The contents of the collection walsh.fyp are:</p>");
-   	print_r($cursor->toArray());
+   	$rssi_values[] = $cursor->toArray();
+	print_r($rssi_values);
 }
 ?>
 <html>
