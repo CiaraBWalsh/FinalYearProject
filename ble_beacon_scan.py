@@ -19,7 +19,8 @@ class ScanDelegate(DefaultDelegate):
 def sendData(data):
         try:
                 current_data = {'RSSI':data}
-                r=requests.post('http://localhost/finalyear/read_data.php', data=current_data)
+                path='http://sbsrv1.cs.nuim.ie/fyp/walsh/read_data.php'    #the url you want to POST to
+                r=requests.post(path, data=current_data)
                 print(r.text)
         except requests.ConnectionError as e:
                 print(e)
