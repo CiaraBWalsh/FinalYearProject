@@ -9,16 +9,29 @@ $collection = new MongoDB\Collection($manager, 'walsh', 'fyp');
    	$options = [
 		'batchSize'=>1,
 		'limit'=>1,
-		'sort' => ['time' => -1]];
+		'sort' => ['time' => (int)-1]];
    	$query = new MongoDB\Driver\Query($filter, $options);
    	$cursor = $manager->executeQuery('walsh.fyp', $query);
-   	print("<p>The contents of the collection walsh.fyp are:</p>");
 	$rssi = 'RSSI';
 	$sensor = 'Sensor';
 	foreach($cursor as $doc) {
-		print("RSSI ");
-		print($doc->$rssi);
-		print("\nDistance Sensor ");
-		print($doc->$sensor);
+		$obj->rssi = $doc->$rssi;
+		$obj->us = $doc->$sensor;
+		echo dataAnalysis($obj->rssi,$obj->us);
 	}
+
+function dataAnalysis($rssi,$us) {
+	if($rssi == 0) {
+		return (int)-1;
+	}
+	if($us == 0) {
+		return (int)-2;
+	}
+	if(($rssi>(int)-80) & ($us<(int)100)) {
+		return (int)1;
+	}
+	else {
+		return 0;
+	}
+}
 ?>

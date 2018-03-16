@@ -1,40 +1,54 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+    		<meta name="viewport" content="width=device-width, initial-scale=1,shrink-to-fit=no">
+		
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	</head>
 	<body>
 		<div class="container">
-				<h2>Current Status</h2>
-				<div class="panel panel-success">
-				  <div id='sensorData' class="panel-heading"></div>
-				</div>
-			  </div>
+			<h2>Current Status</h2>
+			<div id='sensorData' class="card text-black bg-success my-3"></div>
+		</div>
 
 		<script type="text/javascript">		
-
-			function setContent(data) {
-			//	$('#sensorData').html(data);
-				alert(data);
-				$('#sensorData').load('http://sbsrv1.cs.nuim.ie/fyp/walsh/read_data.php');
-			};
-
-			function getInfo() {
-				$.get('http://sbsrv1.cs.nuim.ie/fyp/walsh/read_data.php', setContent(data));
+ 			$(document).ready(function() {
+				$('#sensorData').toggleClass("card text-black bg-success my-3");
+				getInfo();
+			});
+			
+			function getInfo() {	
+				$.ajax({
+                    			url:'http://sbsrv1.cs.nuim.ie/fyp/walsh/read_data.php',
+                    			success:function(result){
+						if(parseInt(result) == -1) {
+							$('#sensorData').removeClass().addClass("card text-black bg-warning my-3");
+							$panelText = "Error - No Bluetooth Device detected";
+							$('#sensorData').html($panelText);
+						}
+						else if(parseInt(result) == -2) {
+							$('#sensorData').removeClass().addClass("card text-black bg-warning my-3");
+							$panelText = "Error -No Ultrasonic Information detected";
+							$('#sensorData').html($panelText);
+						}
+						else if(parseInt(result) == 1) {
+							$('#sensorData').removeClass().addClass("card text-black bg-danger my-3");
+							$panelText = "Warning - too close";
+							$('#sensorData').html($panelText);
+						}
+						else {
+							$('#sensorData').removeClass().addClass("card text-black bg-success my-3");
+							$panelText = "Okay";
+							$('#sensorData').html($panelText);
+						}	
+                    			}
+               			 });
+			setTimeout(getInfo,5000);     
 			}
 
- 			$(document).ready(function () {
-       				setInterval(getInfo(),
-						function(response, status, xhr){
-							if (status == "error") {
-     	 							console.log(response + xhr.status + " " + xhr.statusText);
-  							}
-        				},2000);
-    				});
 		</script>
 	</body>			
 </html>

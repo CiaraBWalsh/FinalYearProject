@@ -13,7 +13,7 @@ $ts = new MongoDB\BSON\UTCDateTime(new DateTime);
 $data = ['RSSI'=>$rssi_value, 'Sensor'=> $sensor_value, 'time'=>$ts];
 try {
   		$collection->insertOne($data);
-} catch (\Exception $e) {
+} catch (Exception $e) {
   		print("<p>Insert failed.</p>");
 }
 $filter = [];
