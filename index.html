@@ -8,15 +8,15 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	</head>
-	<body>
-		<div class="container">
-			<h2>Current Status</h2>
-			<div id='sensorData' class="card text-black bg-success my-3"></div>
+	<body style = "background-color: AntiqueWhite">
+		<div class="container py-2 text-center text-dark">
+			<h1>Current Status</h1>
+			<div id='sensorData' class="card text-muted text-center bg-success py-4 my-5"></div>
 		</div>
 
 		<script type="text/javascript">		
  			$(document).ready(function() {
-				$('#sensorData').toggleClass("card text-black bg-success my-3");
+				$('#sensorData').toggleClass("card text-muted text-center bg-success py-4 my-5");
 				getInfo();
 			});
 			
@@ -24,23 +24,25 @@
 				$.ajax({
                     			url:'http://sbsrv1.cs.nuim.ie/fyp/walsh/read_data.php',
                     			success:function(result){
+						
 						if(parseInt(result) == -1) {
-							$('#sensorData').removeClass().addClass("card text-black bg-warning my-3");
+							console.log(result);
+							$('#sensorData').removeClass().addClass("card text-muted text-center bg-warning py-4 my-5");
 							$panelText = "Error - No Bluetooth Device detected";
 							$('#sensorData').html($panelText);
 						}
 						else if(parseInt(result) == -2) {
-							$('#sensorData').removeClass().addClass("card text-black bg-warning my-3");
+							$('#sensorData').removeClass().addClass("card text-muted text-center bg-warning py-4 my-5");
 							$panelText = "Error -No Ultrasonic Information detected";
 							$('#sensorData').html($panelText);
 						}
 						else if(parseInt(result) == 1) {
-							$('#sensorData').removeClass().addClass("card text-black bg-danger my-3");
+							$('#sensorData').removeClass().addClass("card text-light text-center bg-danger py-4 my-5");
 							$panelText = "Warning - too close";
 							$('#sensorData').html($panelText);
 						}
 						else {
-							$('#sensorData').removeClass().addClass("card text-black bg-success my-3");
+							$('#sensorData').removeClass().addClass("card text-light text-center bg-success py-4 my-5");
 							$panelText = "Okay";
 							$('#sensorData').html($panelText);
 						}	
