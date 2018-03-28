@@ -4,6 +4,7 @@ import json
 from unittest.mock import patch
 from unittest.mock import MagicMock
 
+# Test to ensure that the distance is read correctly
 class TestDistance(unittest.TestCase):
 
     @classmethod
@@ -14,17 +15,20 @@ class TestDistance(unittest.TestCase):
         res = ble_beacon_scan.distance()
         self.assertGreater(ble_beacon_scan.DISTANCE_READ,0)
 
+# Test to ensure that Bluetooth device discovery is handled correctly
 class TestBluetooth(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
         ble_beacon_scan.DEVICE_RSSI = 1
+        ble_beacon_scan.BEACON_ADDR = '00:1b:35:11:be:8e' 
 
     def test_handleDiscovery(self):
         scanner = ble_beacon_scan.Scanner().withDelegate(ble_beacon_scan.ScanDelegate())
         res = scanner.scan(3)
         self.assertLessEqual(ble_beacon_scan.DEVICE_RSSI,0)
 
+# Test to ensure that the sendData function operates correctly
 class TestSendData(unittest.TestCase):
 
     @classmethod
