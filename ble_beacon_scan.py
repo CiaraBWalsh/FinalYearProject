@@ -5,7 +5,7 @@ import time
 import _thread
 
 #Beacon Identifier
-BEACON_UUID='4c000215e2c56db5dffb48d2b060d0f5a71096e000010002ba'
+BEACON_ADDR = '00:1b:35:11:be:8e'
 
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
@@ -64,9 +64,9 @@ class ScanDelegate(DefaultDelegate):
 	#Define how to handle the discovery of a new Bluetooth device
         def handleDiscovery(self, dev, isNewDev, isNewData):
 		
+                global DEVICE_RSSI
                 #Check for specified Beacon identifier
-                if (dev.getValueText(255) == BEACON_UUID):
-                    global DEVICE_RSSI
+                if (str(dev.addr) == str(BEACON_ADDR)):
                     DEVICE_RSSI = dev.rssi
 
 
@@ -96,12 +96,13 @@ def main():
         scanner.clear()
         scanner.start()
         while(True):
+
                 #Open threads to poll data
-                bt_thread = _thread.start_new_thread(scanner.process,(2.0,))
+                bt_thread = _thread.start_new_thread(scanner.process,(3.0,))
                 us_thread = _thread.start_new_thread(distance,())
 
-                #Sleep for 2 seconds to ensure both threads safely complete                
-                time.sleep(2)
+                #Sleep for 4 seconds to ensure both threads safely complete                
+                time.sleep(4)
 
                 #Transmit data to server for processing
                 sendData(DEVICE_RSSI,DISTANCE_READ)

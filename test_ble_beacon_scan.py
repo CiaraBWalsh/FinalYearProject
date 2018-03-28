@@ -35,12 +35,11 @@ class TestSendData(unittest.TestCase):
     @patch('ble_beacon_scan.requests.post')
     def test_sendData(self,mock_post):
 
-        mock_post.side_effect = [
-            ble_beacon_scan.requests.ConnectionError('Test error'),
-            MagicMock(status_code=200,headers={'content-type':"application/json"},text=json.dumps({'status':True}))]
+        url = 'http://google.com'
+        mock_post.return_value.status_code = 200
         
         output = ble_beacon_scan.sendData(5,5)
         
-        self.assertIsNone(output)
+        self.assertEqual(output.status_code,200)
 if __name__ == '__main__':
     unittest.main()

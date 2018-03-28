@@ -21,13 +21,15 @@ $collection = new MongoDB\Collection($manager, 'walsh', 'fyp');
 	}
 
 function dataAnalysis($rssi,$us) {
+	$rLimit = -80;
+	$sLimit = 200;
 	if($rssi == 0) {
 		return (int)-1;
 	}
 	if($us == 0) {
 		return (int)-2;
 	}
-	if(($rssi>(int)-80) & ($us<(int)100)) {
+	if(($rssi>$rLimit) & ($us<$sLimit)) {
 		return (int)1;
 	}
 	else {

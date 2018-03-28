@@ -25,8 +25,8 @@
                     			url:'http://sbsrv1.cs.nuim.ie/fyp/walsh/read_data.php',
                     			success:function(result){
 						
+						console.log(result);
 						if(parseInt(result) == -1) {
-							console.log(result);
 							$('#sensorData').removeClass().addClass("card text-muted text-center bg-warning py-4 my-5");
 							$panelText = "Error - No Bluetooth Device detected";
 							$('#sensorData').html($panelText);
@@ -48,7 +48,7 @@
 						}	
                     			}
                			 });
-			setTimeout(getInfo,5000);     
+			setTimeout(getInfo,8000);     
 			}
 
 		</script>
