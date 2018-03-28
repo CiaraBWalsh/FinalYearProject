@@ -27,7 +27,7 @@ def distance():
     	#Set Trigger pin to HIGH
         GPIO.output(GPIO_TRIGGER, True)
 
-	    #Allow 0.01ms for ultrasonic pulse, then set Trigger pin to LOW
+	#Allow 0.01ms for pin config, then set Trigger pin to LOW
         time.sleep(0.00001)
         GPIO.output(GPIO_TRIGGER, False)
 
@@ -36,7 +36,7 @@ def distance():
 
         #Store starting time
         while GPIO.input(GPIO_ECHO) == 0:
-        	StartTime = time.time()
+            StartTime = time.time()
 
         #Store echo time
         while GPIO.input(GPIO_ECHO) == 1:
@@ -96,17 +96,20 @@ def main():
         scanner.clear()
         scanner.start()
         while(True):
+                try:
+                    #Open threads to poll data
+                    bt_thread = _thread.start_new_thread(scanner.process,(3.0,))
+                    us_thread = _thread.start_new_thread(distance,())
 
-                #Open threads to poll data
-                bt_thread = _thread.start_new_thread(scanner.process,(3.0,))
-                us_thread = _thread.start_new_thread(distance,())
+                    #Sleep for 4 seconds to ensure both threads safely complete                
+                    time.sleep(4)
 
-                #Sleep for 4 seconds to ensure both threads safely complete                
-                time.sleep(4)
-
-                #Transmit data to server for processing
-                sendData(DEVICE_RSSI,DISTANCE_READ)
-                scanner.clear()
+                    #Transmit data to server for processing
+                    sendData(DEVICE_RSSI,DISTANCE_READ)
+                    scanner.clear()
+                except Exception as e:
+                    print(e)
+                    return
 
 
 if __name__ == "__main__":
